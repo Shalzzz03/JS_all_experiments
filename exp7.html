@@ -1,0 +1,170 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Array Operations</title>
+    <style>
+      body {
+        font-family: "Arial", sans-serif;
+        background-color: #f2f2f2;
+        margin: 0;
+        padding: 20px;
+      }
+      .container {
+        max-width: 600px;
+        margin: 0 auto;
+        background: #ffffff;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      }
+      h1 {
+        text-align: center;
+        color: #333;
+      }
+      label {
+        display: block;
+        margin-bottom: 8px;
+        color: #666;
+      }
+      input[type="text"],
+      input[type="number"],
+      select,
+      button {
+        width: calc(100% - 22px);
+        padding: 12px;
+        margin: 10px 0;
+        border-radius: 8px;
+        border: 1px solid #ddd;
+        box-sizing: border-box;
+        font-size: 16px;
+      }
+      button {
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        cursor: pointer;
+        transition: background-color 0.3s;
+      }
+      button:hover {
+        background-color: #0056b3;
+      }
+      .result {
+        margin-top: 20px;
+        padding: 15px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        background-color: #f9f9f9;
+      }
+      .error {
+        color: #ff0000;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h3>Name: Shalin Chore</h3>
+      <h3>Roll No: 42360</h3>
+      <h1>Array Operations</h1>
+
+      <label for="arraySize">Array Size:</label>
+      <input type="number" id="arraySize" placeholder="Enter size of array" min="1" required />
+
+      <label for="arrayElements">Array Elements (comma-separated):</label>
+      <input
+        type="text"
+        id="arrayElements"
+        placeholder="Enter array elements after size"
+      />
+
+      <label for="operation">Select Operation:</label>
+      <select id="operation">
+        <option value="perform">Perform Operations</option>
+        <option value="empty">Empty Array</option>
+      </select>
+
+      <div id="performOptions">
+        <label for="deleteValue">Element to Delete:</label>
+        <input
+          type="text"
+          id="deleteValue"
+          placeholder="Enter element to delete"
+        />
+
+        <label for="checkValue">Value to Check:</label>
+        <input type="text" id="checkValue" placeholder="Enter value to check" />
+      </div>
+
+      <button onclick="handleOperation()">Execute</button>
+
+      <div id="result" class="result"></div>
+    </div>
+
+    <script>
+      let array = [];
+
+      function handleOperation() {
+        const arraySize = parseInt(document.getElementById("arraySize").value);
+        const arrayInput = document.getElementById("arrayElements").value;
+        const operation = document.getElementById("operation").value;
+        const deleteValue = document.getElementById("deleteValue").value;
+        const checkValue = document.getElementById("checkValue").value;
+        const resultDiv = document.getElementById("result");
+
+        resultDiv.innerHTML = "";
+
+        // Check if array size is valid
+        if (isNaN(arraySize) || arraySize <= 0) {
+          resultDiv.innerHTML = "<p class='error'>Invalid array size.</p>";
+          return;
+        }
+
+        // Check if elements match the size of the array
+        array = arrayInput.split(",").map((item) => item.trim());
+
+        if (array.length !== arraySize) {
+          resultDiv.innerHTML = "<p class='error'>Array size and number of elements don't match.</p>";
+          return;
+        }
+
+        if (operation === "perform") {
+          const deleteValueParsed = deleteValue.trim();
+          const checkValueParsed = checkValue.trim();
+
+          const deleteIndex = array.indexOf(deleteValueParsed);
+          const containsValue = array.includes(checkValueParsed);
+
+          if (deleteIndex > -1) {
+            array.splice(deleteIndex, 1);
+          } else {
+            resultDiv.innerHTML += `<p class='error'>Element '${deleteValueParsed}' not found for deletion.</p>`;
+          }
+
+          resultDiv.innerHTML += `
+                    <p><strong>Array:</strong> ${array}</p>
+                    <p><strong>Contains '${checkValueParsed}':</strong> ${containsValue}</p>
+                    <p><strong>Array after deletion:</strong> ${array}</p>
+                `;
+        } else if (operation === "empty") {
+          array = []; // Empty array using standard method
+          resultDiv.innerHTML =
+            "<p><strong>Array has been emptied.</strong></p>";
+        }
+      }
+
+      document
+        .getElementById("operation")
+        .addEventListener("change", function () {
+          const selectedOperation = this.value;
+          const performOptions = document.getElementById("performOptions");
+          if (selectedOperation === "perform") {
+            performOptions.style.display = "block";
+          } else {
+            performOptions.style.display = "none";
+          }
+        });
+    </script>
+  </body>
+</html>

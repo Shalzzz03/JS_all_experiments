@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>String Operations</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: left;
+            margin-left: 50px;
+            margin-top: 100px;
+            background: rgb(255,255,255);
+            /* background: radial-gradient(circle, rgba(255,255,255,1) 0%, rgba(26,255,0,1) 100%); */
+            
+        }
+    </style>
+</head>
+<body>
+    <div >
+        <h3>Name: Shalin Chore</h3>    
+        <h3>Roll No: 42360</h3>
+        <h2>String Operations</h2>
+
+        <div class="operation-container">
+            <h3>Reverse String</h3>
+            <input type="text" id="inputReverse" placeholder="Enter a string...">
+            <button onclick="reverseString()">Reverse</button>
+            <div id="outputReverse" class="result"></div>
+        </div>
+
+        <div >
+            <h3>Replace Characters</h3>
+            <input type="text" id="inputReplaceOriginal" placeholder="Enter original string...">
+            <input type="text" id="inputReplaceChar" placeholder="Enter character to replace...">
+            <input type="text" id="inputReplaceNew" placeholder="Enter new character...">
+            <button onclick="replaceCharacters()">Replace</button>
+            <div id="outputReplace" class="result"></div>
+        </div>
+
+        <div >
+            <h3>Check Palindrome</h3>
+            <input type="text" id="inputPalindrome" placeholder="Enter a string...">
+            <button onclick="checkPalindrome()">Check Palindrome</button>
+            <div id="outputPalindrome" class="result"></div>
+        </div>
+    </div>
+
+    <script>
+        function reverseString() {
+            let inputStr = document.getElementById('inputReverse').value;
+            let reversedStr = '';
+            for (let i = inputStr.length - 1; i >= 0; i--) {
+                reversedStr += inputStr[i]; // Append each character in reverse order
+            }
+            displayOutput('outputReverse', `Reversed string: ${reversedStr}`);
+        }
+
+        function replaceCharacters() {
+        let originalStr = document.getElementById('inputReplaceOriginal').value;
+        let charToReplace = document.getElementById('inputReplaceChar').value;
+        let newChar = document.getElementById('inputReplaceNew').value;
+
+        // Validate inputs
+        if (charToReplace.length !== 1 || newChar.length !== 1) {
+            displayOutput('outputReplace', 'Please enter a single character for both fields.');
+            return;
+        }
+
+        // Check if the character to replace exists in the original string
+        if (!originalStr.includes(charToReplace)) {
+            displayOutput('outputReplace', `Character "${charToReplace}" not found in the string.`);
+            return;
+        }
+
+        // Replace all occurrences of the character
+        let replacedStr = originalStr.split(charToReplace).join(newChar);
+        displayOutput('outputReplace', `Replaced string: ${replacedStr}`);
+    }
+
+        function checkPalindrome() {
+            let inputStr = document.getElementById('inputPalindrome').value;
+            let cleanStr = '';
+            
+            // Clean the string: convert to lowercase and remove non-alphanumeric characters
+            for (let i = 0; i < inputStr.length; i++) {
+                let char = inputStr[i].toLowerCase();
+                if (char >= 'a' && char <= 'z' || char >= '0' && char <= '9') {
+                    cleanStr += char; // Append only alphanumeric characters
+                }
+            }
+
+            // Check if the cleaned string is a palindrome
+            let isPalindrome = true;
+            for (let i = 0; i < Math.floor(cleanStr.length / 2); i++) {
+                if (cleanStr[i] !== cleanStr[cleanStr.length - 1 - i]) {
+                    isPalindrome = false; // Mismatch found
+                    break;
+                }
+            }
+
+            if (isPalindrome) {
+                displayOutput('outputPalindrome', `"${inputStr}" is a palindrome.`);
+            } else {
+                displayOutput('outputPalindrome', `"${inputStr}" is not a palindrome.`);
+            }
+        }
+
+        function displayOutput(outputId, message) {
+            document.getElementById(outputId).innerText = message;
+        }
+
+    </script>
+</body>
+</html>

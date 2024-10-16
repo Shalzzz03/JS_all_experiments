@@ -1,0 +1,136 @@
+<!-- '=' wala code and user defined code -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>String Comparison</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: left;
+            margin-left: 50px;
+            margin-top: 100px;
+            background: rgb(255,255,255);
+            background: radial-gradient(circle, rgba(255,255,255,1) 0%, rgba(26,255,0,1) 100%);
+            
+        }
+        .container {
+            max-width: 500px;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+        }
+        input, button {
+            margin: 10px 0;
+            padding: 10px;
+            width: 100%;
+        }
+        .result {
+            font-weight: bold;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h3>Name: Shalin Chore</h3>    
+        <h3>Roll No: 42360</h3>
+        <h2>String Comparison</h2>
+        
+        <!-- Input Fields for String 1 and String 2 -->
+        <label for="string1">Enter String 1:</label>
+        <input type="text" id="string1" placeholder="Enter the first string">
+
+        <label for="string2">Enter String 2:</label>
+        <input type="text" id="string2" placeholder="Enter the second string">
+        
+        <button onclick="compareStrings()">Compare Strings</button>
+
+        <h3>Comparison Results:</h3>
+        <p id="StrictEqualityResult" class="result"></p>
+        <p id="EqualityResult" class="result"></p>
+        <p id="lengthResult" class="result"></p>
+        <p id="alphabeticalResult" class="result"></p>
+        <p id="UserDefinedResult" class="result"></p>
+    </div>
+
+    <script>
+        function compareStrings() {
+            // Get the values of string1 and string2 from input fields
+            const string1 = document.getElementById('string1').value;
+            const string2 = document.getElementById('string2').value;
+
+            // Compare using the Strict Equality operator ===
+            function compareStrictEquality(str1, str2) {
+                if (str1 === str2) {
+                    return `"${str1}" and "${str2}" are strictly(===) equal.`;
+                } else {
+                    return `"${str1}" and "${str2}" are NOT strictly equal.`;
+                }
+            }
+            // Compare using the Equality operator ==
+            function compareEquality(str1, str2) {
+                if (str1 == str2) {
+                    return `"${str1}" and "${str2}" are loosely(==) equal.`;
+                } else {
+                    return `"${str1}" and "${str2}" are NOT strictly equal.`;
+                }
+            }
+
+            //compare using user defined function
+            function userdefinedEquality(str1, str2) {
+            let flag = 1;
+            let n1 = str1.length;
+            let n2 = str2.length;
+            let size = Math.min(n1, n2);
+            for (let j = 0; j < size; j++) {
+                if (str1[j] !== str2[j]) {
+                    flag = 0;
+                    break;
+                }
+            }
+            if (flag === 1) {
+                return `"${str1}" and "${str2}" are equal using user defined method.`;
+            } else {
+                return `"${str1}" and "${str2}" are not equal using user defined method.`;
+            }
+        }
+
+
+            // Compare using the "length" property
+            function compareLength(str1, str2) {
+                if (str1.length > str2.length) {
+                    return `"${str1}" is longer than "${str2}".`;
+                } else if (str1.length < str2.length) {
+                    return `"${str1}" is shorter than "${str2}".`;
+                } else {
+                    return `"${str1}" and "${str2}" are of the same length.`;
+                }
+            }
+
+            // Compare based on alphabetical order using localeCompare()
+            function compareAlphabeticalOrder(str1, str2) {
+                const result = str1.localeCompare(str2);
+                if (result < 0) {
+                    return `"${str1}" comes before "${str2}" alphabetically.`;
+                } else if (result > 0) {
+                    return `"${str1}" comes after "${str2}" alphabetically.`;
+                } else {
+                    return `"${str1}" and "${str2}" are alphabetically the same.`;
+                }
+            }
+
+            // Display results on the page
+            document.getElementById('StrictEqualityResult').textContent = compareStrictEquality(string1, string2);
+            document.getElementById('EqualityResult').textContent =compareEquality(string1, string2);
+            document.getElementById('lengthResult').textContent = compareLength(string1, string2);
+            document.getElementById('alphabeticalResult').textContent = compareAlphabeticalOrder(string1, string2);
+            document.getElementById('UserDefinedResult').textContent = userdefinedEquality(string1, string2);
+        }
+    </script>
+
+</body>
+</html>

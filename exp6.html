@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Array Operations</title>
+    <style>
+      :root {
+        --primary-color: #3498db;
+        --secondary-color: #2c3e50;
+        --background-color: #ecf0f1;
+        --text-color: #333;
+        --border-radius: 8px;
+        --transition-speed: 0.3s;
+      }
+
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background-color: var(--background-color);
+        margin: 0;
+        padding: 20px;
+        color: var(--text-color);
+        line-height: 1.6;
+      }
+
+      .container {
+        max-width: 600px;
+        margin: 0 auto;
+        background: white;
+        padding: 30px;
+        border-radius: var(--border-radius);
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      }
+
+      h1 {
+        text-align: center;
+        /* color: var(--secondary-color); */
+        margin-bottom: 30px;
+      }
+
+      label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: bold;
+      }
+
+      input[type="number"],
+      input[type="text"] {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 20px;
+        border: 1px solid #ddd;
+        border-radius: var(--border-radius);
+        box-sizing: border-box;
+      }
+
+      button {
+        width: 100%;
+        padding: 12px;
+        background-color: var(--primary-color);
+        color: white;
+        border: none;
+        border-radius: var(--border-radius);
+        cursor: pointer;
+        font-size: 16px;
+        transition: background-color var(--transition-speed);
+      }
+
+      button:hover {
+        background-color: color-mix(in srgb, var(--primary-color) 80%, black);
+      }
+
+      .result {
+        margin-top: 20px;
+        padding: 15px;
+        background-color: color-mix(
+          in srgb,
+          var(--background-color) 70%,
+          white
+        );
+        border-radius: var(--border-radius);
+      }
+
+      #arrayInputs,
+      #appendSection {
+        display: none;
+      }
+
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --background-color: #2c3e50;
+          --text-color: #ecf0f1;
+        }
+
+        .container {
+          background: #34495e;
+        }
+
+        input[type="number"],
+        input[type="text"] {
+          background-color: #445566;
+          color: var(--text-color);
+          border-color: #556677;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h3>Name: Shalin Chore</h3>
+      <h3>Roll No: 42360</h3>
+      <h1>Array Operations</h1>
+
+      <div id="sizeSection">
+        <label for="arraySize">Enter the size of the array:</label>
+        <input type="number" id="arraySize" min="1" required />
+        <button onclick="validateSize()">Set Array Size</button>
+      </div>
+
+      <div id="arrayInputs"></div>
+
+      <div id="appendSection">
+        <label for="appendValue">Enter value to append:</label>
+        <input type="text" id="appendValue" required />
+        <button onclick="appendToArray()">Append to Array</button>
+      </div>
+
+      <div id="result" class="result"></div>
+    </div>
+
+    <script>
+      let myArray = [];
+      let arraySize = 0;
+
+      function validateSize() {
+        const sizeInput = document.getElementById("arraySize");
+        arraySize = parseInt(sizeInput.value);
+
+        if (arraySize > 0) {
+          document.getElementById("sizeSection").style.display = "none";
+          createArrayInputs();
+        } else {
+          alert("Please enter a valid array size (greater than 0).");
+        }
+      }
+
+      function createArrayInputs() {
+        const arrayInputs = document.getElementById("arrayInputs");
+        arrayInputs.innerHTML = "";
+        arrayInputs.style.display = "block";
+
+        for (let i = 0; i < arraySize; i++) {
+          arrayInputs.innerHTML += `
+                    <label for="arrayItem${i}">Enter value for item ${
+            i + 1
+          }:</label>
+                    <input type="text" id="arrayItem${i}" required>
+                `;
+        }
+
+        arrayInputs.innerHTML +=
+          '<button onclick="createArray()">Create Array</button>';
+      }
+
+      function createArray() {
+        myArray = [];
+        for (let i = 0; i < arraySize; i++) {
+          const value = document.getElementById(`arrayItem${i}`).value;
+          myArray.push(parseInput(value));
+        }
+
+        document.getElementById("arrayInputs").style.display = "none";
+        document.getElementById("appendSection").style.display = "block";
+        updateArrayDisplay();
+      }
+
+      function appendToArray() {
+        const input = document.getElementById("appendValue").value.trim();
+        const value = parseInput(input);
+
+        myArray.push(value);
+        checkAppendedObject(value);
+        updateArrayDisplay();
+      }
+
+      function parseInput(input) {
+        if (
+          (input.startsWith("[") && input.endsWith("]")) ||
+          (input.startsWith("{") && input.endsWith("}"))
+        ) {
+          try {
+            return JSON.parse(input);
+          } catch (e) {
+            return input;
+          }
+        }
+        return input;
+      }
+
+      function checkAppendedObject(value) {
+        const isArray = Array.isArray(value);
+        document.getElementById("result").innerHTML += `
+                <p><strong>Is appended object an array?</strong> ${isArray}</p>
+                <p><strong>Appended value:</strong> ${JSON.stringify(value)}</p>
+            `;
+      }
+
+      function updateArrayDisplay() {
+        let displayHTML = "<p><strong>Current Array:</strong></p><ul>";
+
+        myArray.forEach((item, index) => {
+          const isItemArray = Array.isArray(item);
+          displayHTML += `
+                    <li>
+                        Index ${index}: ${JSON.stringify(item)}
+                        <br>
+                        <strong>Is array?</strong> ${isItemArray}
+                    </li>
+                `;
+        });
+
+        displayHTML += "</ul>";
+        displayHTML += `<p><strong>Array Length:</strong> ${myArray.length}</p>`;
+
+        document.getElementById("result").innerHTML = displayHTML;
+      }
+    </script>
+  </body>
+</html>

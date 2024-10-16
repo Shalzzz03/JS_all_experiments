@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Student Information Form</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        font-weight: bold;
+        text-align: left;
+        margin-left: 50px;
+        margin-top: 100px;
+        background: rgb(255, 255, 255);
+        background: radial-gradient(
+          circle,
+          rgba(255, 255, 255, 1) 0%,
+          rgba(26, 255, 0, 1) 100%
+        );
+      }
+
+      .container {
+        width: 50%;
+        margin: auto;
+        padding: 20px;
+        background: rgb(255,255,255);
+        border-radius: 10px;
+      }
+
+      label {
+        display: block;
+        margin-top: 10px;
+      }
+
+      input[type="text"],
+      input[type="email"],
+      select {
+        width: 100%;
+        padding: 8px;
+        margin-top: 5px;
+      }
+
+      input[type="submit"] {
+        margin-top: 20px;
+        padding: 10px;
+        width: 100%;
+        background-color: #4caf50;
+        color: white;
+        border: none;
+        cursor: pointer;
+        font-size: 16px;
+      }
+
+      input[type="submit"]:hover {
+        background-color: #45a049;
+      }
+
+      .error-message {
+        color: red;
+        margin-top: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h3>Name: Shalin Chore</h3>    
+      <h3>Roll No: 42360</h3>
+      <h1>Student Information Form</h1>
+      <form id="studentForm" onsubmit="return validateForm()">
+        <label for="name">Name:</label>
+        <input
+          type="text"
+          id="name"
+          name="name"
+          placeholder="Enter your name"
+          required
+        /><br />
+
+        <label for="address">Address:</label>
+        <input
+          type="text"
+          id="address"
+          name="address"
+          placeholder="Enter your address"
+          required
+        /><br />
+
+        <label for="city">City:</label>
+        <input
+          type="text"
+          id="city"
+          name="city"
+          placeholder="Enter your city"
+          required
+        /><br />
+
+        <label for="state">State:</label>
+        <input
+          type="text"
+          id="state"
+          name="state"
+          placeholder="Enter your state"
+          required
+        /><br />
+        <label for="pincode">Pin Code:</label>
+        <input
+          type="text"
+          id="pincode"
+          name="pincode"
+          placeholder="Enter your Pin Code"
+          required
+        /><br />
+
+        <label for="gender">Gender:</label>
+        <select id="gender" name="gender" required>
+          <option value="">Select</option>
+          <option value="male">Male</option>
+          <option value="female">Female</option>
+          <option value="other">Other</option></select
+        ><br />
+
+        <label for="mobile">Mobile Number:</label>
+        <input
+          type="text"
+          id="mobile"
+          name="mobile"
+          placeholder="Enter your mobile number"
+          required
+        /><br />
+
+        <label for="email">Email ID:</label>
+        <input
+          type="email"
+          id="email"
+          name="email"
+          placeholder="Enter your email"
+          required
+        /><br />
+
+        <div id="errorMessage" class="error-message"></div>
+
+        <input type="submit" value="Submit" />
+      </form>
+    </div>
+
+    <script>
+      function validateForm() {
+        let name = document.getElementById("name").value;
+        let city = document.getElementById("city").value;
+        let state = document.getElementById("state").value;
+        let pincode = document.getElementById("pincode").value;
+        let mobile = document.getElementById("mobile").value;
+        let email = document.getElementById("email").value;
+        let errorMessage = document.getElementById("errorMessage");
+
+        // Clear any previous errors
+        errorMessage.innerHTML = "";
+
+        // Name validation (no special characters, letters only)
+        let namePattern = /^[a-zA-Z\s]+$/;
+        if (!namePattern.test(name)) {
+          errorMessage.innerHTML =
+            "Please enter a valid name (letters and spaces only).";
+          return false;
+        }
+
+        // City and State validation (letters only, no spaces or special characters)
+        let cityStatePattern = /^[a-zA-Z]+$/;
+        if (!cityStatePattern.test(city)) {
+          errorMessage.innerHTML =
+            "Please enter a valid city name (letters only, no spaces or special characters).";
+          return false;
+        }
+
+        if (!cityStatePattern.test(state)) {
+          errorMessage.innerHTML =
+            "Please enter a valid state name (letters only, no spaces or special characters).";
+          return false;
+        }
+
+        // Pin Code validation (6 digits only)
+        let pinCodePattern = /^[0-9]{6}$/;
+        if (!pinCodePattern.test(pincode)) {
+          errorMessage.innerHTML = "Please enter a valid 6-digit Pin Code.";
+          return false;
+        }
+
+        // Mobile validation (10 digits, starts with 6, 7, 8, or 9)
+        let mobilePattern = /^[6-9][0-9]{9}$/;
+        if (!mobilePattern.test(mobile)) {
+          errorMessage.innerHTML =
+            "Please enter a valid 10-digit mobile number starting with 6, 7, 8, or 9.";
+          return false;
+        }
+
+        // Email validation (specific domains only)
+        let emailPattern = /^[a-zA-Z0-9._%+-]+@(gmail|yahoo|hotmail)\.com$/;
+        if (!emailPattern.test(email)) {
+          errorMessage.innerHTML =
+            "Please enter a valid email with domains: gmail.com, yahoo.com, or hotmail.com.";
+          return false;
+        }
+
+        // If all validations pass, show welcome page
+        showWelcomePage();
+        return false; // Prevent form submission to stay on the page
+      }
+
+      function showWelcomePage() {
+        let container = document.querySelector(".container");
+        container.innerHTML = `
+        <h1>Congratulations!</h1>
+        <p>Welcome to our platform.</p>
+        <button onclick="goBack()">Go Back to Home Page</button>
+    `;
+      }
+
+      function goBack() {
+        location.reload(); // Reloads the form page
+      }
+    </script>
+  </body>
+</html>

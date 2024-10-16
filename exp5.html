@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Countdown Timer</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.6.13/flatpickr.min.css"
+    />
+    <style>
+      body {
+            font-family: Arial, sans-serif;
+            text-align: left;
+            margin-left: 50px;
+            margin-top: 100px;
+            background: rgb(255,255,255);
+            background: radial-gradient(circle, rgba(255,255,255,1) 0%, rgba(26,255,0,1) 100%);
+            
+        }
+      .container {
+        max-width: 600px;
+        margin: 0 auto;
+        background: white;
+        padding: 20px;
+        border-radius: 5px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      }
+      h1 {
+        text-align: center;
+      }
+      input[type="text"] {
+        width: 100%;
+        padding: 10px;
+        margin: 10px 0;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+      }
+      button {
+        width: 100%;
+        padding: 10px;
+        background-color: #28a745;
+        color: white;
+        border: none;
+        cursor: pointer;
+        border-radius: 5px;
+      }
+      button:hover {
+        background-color: #218838;
+      }
+      .result {
+        margin-top: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    
+    <div class="container">
+      <h3>Name: Shalin Chore</h3>    
+    <h3>Roll No: 42360</h3>
+      <h1>Countdown Timer</h1>
+
+      <label for="endDate">Set End Date and Time:</label>
+      <input
+        type="text"
+        id="endDate"
+        placeholder="Select date and time"
+        required
+      />
+
+      <button onclick="startCountdown()">Start Countdown</button>
+
+      <div id="result" class="result"></div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.6.13/flatpickr.min.js"></script>
+    <script>
+      flatpickr("#endDate", {
+        enableTime: true,
+        dateFormat: "Y-m-d H:i",
+      });
+
+      function startCountdown() {
+        const endDateInput = document.getElementById("endDate").value;
+
+        const countDownDate = new Date(endDateInput).getTime();
+
+        const x = setInterval(function () {
+          const now = new Date().getTime();
+
+          const distance = countDownDate - now;
+
+          const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+          const hours = Math.floor(
+            (distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+          );
+          const minutes = Math.floor(
+            (distance % (1000 * 60 * 60)) / (1000 * 60)
+          );
+          const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+          document.getElementById("result").innerHTML =
+            days + "d " + hours + "h " + minutes + "m " + seconds + "s ";
+
+          if (distance < 0) {
+            clearInterval(x);
+            document.getElementById("result").innerHTML = "EXPIRED";
+          }
+        }, 1000);
+      }
+    </script>
+  </body>
+</html>
